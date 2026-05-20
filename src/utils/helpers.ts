@@ -12,3 +12,10 @@ export function filterByField<T, K extends keyof T>(
 ): T[] {
   return items.filter((item) => item[field] === value);
 }
+
+export function formatCurrency(amount: number, currency: string): string {
+  return new Intl.NumberFormat(undefined, {
+    style: "currency",
+    currency,
+  }).format(amount);
+}
