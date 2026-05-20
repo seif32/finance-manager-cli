@@ -1,6 +1,6 @@
-type AccountType = "checking" | "savings" | "investment";
+export type AccountType = "checking" | "savings" | "investment";
 
-type Account = {
+export type Account = {
   id: string;
   name: string;
   balance: number;
@@ -9,12 +9,12 @@ type Account = {
   readonly createdAt: Date;
 };
 
-type TransactionType =
+export type TransactionType =
   | { kind: "deposit"; toAccountId: string }
   | { kind: "withdrawal"; fromAccountId: string }
   | { kind: "transfer"; fromAccountId: string; toAccountId: string };
 
-type Transaction = {
+export type Transaction = {
   id: string;
   type: TransactionType;
   amount: number;
@@ -22,21 +22,21 @@ type Transaction = {
   readonly timestamp: Date;
 };
 
-type AccountSummary = Pick<
+export type AccountSummary = Pick<
   Account,
   "id" | "name" | "type" | "balance" | "currency"
 >;
 
-type CreateAccountPayload = Omit<Account, "id" | "createdAt">;
+export type CreateAccountPayload = Omit<Account, "id" | "createdAt">;
 
-type UpdateAccountPayload = Partial<Omit<Account, "id" | "createdAt">>;
+export type UpdateAccountPayload = Partial<Omit<Account, "id" | "createdAt">>;
 
-type ApiResponse<T> = {
+export type ApiResponse<T> = {
   data: T;
   isSuccess: boolean;
 };
 
-type ExchangeRate = {
+export type ExchangeRate = {
   result: string;
   base_code: string;
   rates: Record<string, number>;
