@@ -37,6 +37,14 @@ export function getAccount(id: string): Account | undefined {
   return accounts[id];
 }
 
+export function addAccount(account: Account): Account {
+  return (accounts[account.id] = account);
+}
+export function addTransaction(transaction: Transaction): Transaction {
+  transactions.push(transaction);
+  return transaction;
+}
+
 export function getTransactions(): Transaction[] {
   return transactions;
 }
