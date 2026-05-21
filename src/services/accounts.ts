@@ -60,3 +60,21 @@ export function getAllSummaries(): AccountSummary[] {
     };
   });
 }
+
+export function adjustBalance(id: string, amount: number): Account {
+  const existingAccount = getAccount(id);
+
+  if (!existingAccount)
+    throw new Error(`No existing account with this id ${id}`);
+
+  if (existingAccount.balance + amount < 0)
+    throw new Error("Rejected amount due to negative balance");
+
+  const updatedAccount = {
+    ...existingAccount,
+    balance: existingAccount.balance + amount,
+  };
+  addAccount(updatedAccount);
+
+  return updatedAccount;
+}
