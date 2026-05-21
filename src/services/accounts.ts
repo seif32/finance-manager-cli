@@ -1,5 +1,10 @@
-import { addAccount, getAccount } from "../data/store";
-import { Account, CreateAccountPayload, UpdateAccountPayload } from "../types";
+import { addAccount, getAccount, getAccounts } from "../data/store";
+import {
+  Account,
+  AccountSummary,
+  CreateAccountPayload,
+  UpdateAccountPayload,
+} from "../types";
 
 export function createAccount(payload: CreateAccountPayload): Account {
   const newAccount: Account = {
@@ -21,6 +26,54 @@ export function updateAccount(
     throw new Error(`No existing account with this id ${id}`);
 
   const updatedAccount = { ...existingAccount, ...payload };
+  addAccount(updatedAccount);
+
+  return updatedAccount;
+}
+
+export function getAccountSummary(id: string): AccountSummary {
+  const existingAccount = getAccount(id);
+
+  if (!existingAccount)
+    throw new Error(`No existing account with this id ${id}`);
+
+  const {
+    id: existingAccountId,
+    balance,
+    currency,
+    name,
+    type,
+  } = existingAccount;
+
+  return { id: existingAccountId, balance, currency, name, type };
+}
+
+export function getAllSummaries(): AccountSummary[] {
+  const allAccountsRecords = getAccounts();
+  return Object.values(allAccountsRecords).map((account) => {
+    return {
+      id: account.id,
+      balance: account.balance,
+      currency: account.currency,
+      name: account.name,
+      type: account.type,
+    };
+  });
+}
+
+export function adjustBalance(id: string, amount: number): Account {
+  const existingAccount = getAccount(id);
+
+  if (!existingAccount)
+    throw new Error(`No existing account with this id ${id}`);
+
+  if (existingAccount.balance + amount < 0)
+    throw new Error("Rejected amount due to negative balance");
+
+  const updatedAccount = {
+    ...existingAccount,
+    balance: existingAccount.balance + amount,
+  };
   addAccount(updatedAccount);
 
   return updatedAccount;
