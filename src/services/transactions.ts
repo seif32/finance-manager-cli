@@ -1,4 +1,4 @@
-import { addTransaction } from "../data/store";
+import { addTransaction, getTransactions } from "../data/store";
 import { Transaction, TransactionType } from "../types";
 import { adjustBalance } from "./accounts";
 
@@ -45,4 +45,25 @@ export function processTransaction(
       const _never: never = transaction;
       throw new Error("Unknown transaction type");
   }
+}
+
+export function getTransactionHistory(accountId: string): Transaction[] {
+  const allTransactions = getTransactions();
+  const accountTransactions = allTransactions.filter((transaction) => {
+    if (transaction.type.kind === "deposit") {
+      return transaction.type.toAccountId === accountId;
+    }
+    if (transaction.type.kind === "withdrawal") {
+      return transaction.type.fromAccountId === accountId;
+    }
+    if (transaction.type.kind === "transfer") {
+      return (
+        transaction.type.fromAccountId === accountId ||
+        transaction.type.toAccountId === accountId
+      );
+    }
+    return;
+  });
+
+  return accountTransactions;
 }
