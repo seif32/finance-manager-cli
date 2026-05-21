@@ -10,9 +10,14 @@ export type Account = {
 };
 
 export type TransactionType =
-  | { kind: "deposit"; toAccountId: string }
-  | { kind: "withdrawal"; fromAccountId: string }
-  | { kind: "transfer"; fromAccountId: string; toAccountId: string };
+  | { kind: "deposit"; toAccountId: string; amount: number }
+  | { kind: "withdrawal"; fromAccountId: string; amount: number }
+  | {
+      kind: "transfer";
+      fromAccountId: string;
+      toAccountId: string;
+      amount: number;
+    };
 
 export type Transaction = {
   id: string;
