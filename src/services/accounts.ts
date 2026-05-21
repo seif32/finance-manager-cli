@@ -1,5 +1,5 @@
-import { addAccount } from "../data/store";
-import { Account, CreateAccountPayload } from "../types";
+import { addAccount, getAccount } from "../data/store";
+import { Account, CreateAccountPayload, UpdateAccountPayload } from "../types";
 
 export function createAccount(payload: CreateAccountPayload): Account {
   const newAccount: Account = {
@@ -9,4 +9,19 @@ export function createAccount(payload: CreateAccountPayload): Account {
   };
 
   return addAccount(newAccount);
+}
+
+export function updateAccount(
+  payload: UpdateAccountPayload,
+  id: string,
+): Account {
+  const existingAccount = getAccount(id);
+
+  if (!existingAccount)
+    throw new Error(`No existing account with this id ${id}`);
+
+  const updatedAccount = { ...existingAccount, ...payload };
+  addAccount(updatedAccount);
+
+  return updatedAccount;
 }
