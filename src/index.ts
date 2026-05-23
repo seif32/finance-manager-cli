@@ -1,3 +1,4 @@
+import { convertBalance } from "./services/currency";
 import {
   getTransactionSummary,
   processTransaction,
@@ -26,5 +27,3 @@ processTransaction({
   toAccountId: "1",
   kind: "transfer",
 });
-
-console.log(getTransactionSummary("1"));

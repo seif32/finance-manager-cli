@@ -13,3 +13,15 @@ export async function fetchExchangeRates(): Promise<ExchangeRate> {
   }
   return data;
 }
+
+export function convertBalance(
+  amount: number,
+  fromCurrency: string,
+  toCurrency: string,
+  rates: ExchangeRate,
+): number {
+  const amountFrom = amount / rates.rates[fromCurrency];
+  const amountTo = amountFrom * rates.rates[toCurrency];
+
+  return amountTo;
+}
