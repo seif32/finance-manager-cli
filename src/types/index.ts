@@ -32,6 +32,12 @@ export type AccountSummary = Pick<
   "id" | "name" | "type" | "balance" | "currency"
 >;
 
+export type TransactionSummary = {
+  totalDepositAmount: number;
+  totalWithdrawalAmount: number;
+  netBalance: number;
+};
+
 export type CreateAccountPayload = Omit<Account, "id" | "createdAt">;
 
 export type UpdateAccountPayload = Partial<Omit<Account, "id" | "createdAt">>;
