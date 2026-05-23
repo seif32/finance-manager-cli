@@ -1,4 +1,5 @@
-import { ExchangeRate } from "../types";
+import { getAccounts } from "../data/store";
+import { AccountSummary, ExchangeRate } from "../types";
 import { isExchangeRate } from "../utils/validators";
 
 export async function fetchExchangeRates(): Promise<ExchangeRate> {
@@ -24,4 +25,24 @@ export function convertBalance(
   const amountTo = amountFrom * rates.rates[toCurrency];
 
   return amountTo;
+}
+
+export async function getAccountBalancesInCurrency(
+  targetCurrency: string,
+): Promise<AccountSummary[]> {
+  const accounts = getAccounts();
+  const rates = await fetchExchangeRates();
+
+  return Object.values(accounts).map((account) => {
+    const amountFrom = account.balance / rates.rates[account.currency];
+    const amountTo = amountFrom * rates.rates[targetCurrency];
+
+    return {
+      name: account.name,
+      balance: amountTo,
+      currency: targetCurrency,
+      id: account.id,
+      type: account.type,
+    };
+  });
 }
