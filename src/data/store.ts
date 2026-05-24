@@ -4,7 +4,7 @@ const accounts: Record<string, Account> = {
   "1": {
     id: "1",
     name: "Seif",
-    balance: 750,
+    balance: 1000,
     currency: "USD",
     type: "checking",
     createdAt: new Date(),
